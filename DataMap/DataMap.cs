@@ -1,43 +1,66 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.ExceptionServices;
 
 namespace DataMap
 {
     public class DataMap
     {
-        private Hashtable _map;
+        private Dictionary<string, dynamic> _map;
 
-        public DataMap()
+        public DataMap(Dictionary<string, dynamic> inObj = null)
         {
-            _map = new Hashtable();
+            _map = inObj ?? new Dictionary<string, dynamic>();
         }
-
-        public object GetData(params string[] inParam)
+        
+        private dynamic GetData_Internal(dynamic inTarget, params string[] inParam)
         {
-            if (inParam.Length == 0) return _map;
-
-            object currentNode = _map;
-            for (int i = 0; i < inParam.Length; i++)
+            var dict = inTarget as Dictionary<string, dynamic>;
+            if (dict == null)
             {
-                if ((currentNode is Hashtable) == false) return currentNode;
-                currentNode = (currentNode as Hashtable)[inParam[i]];
+                return inTarget;
             }
 
-            return currentNode;
+            string key = inParam[0];
+            var nextParam = inParam.Skip(1).ToArray();
+
+            if (!dict.TryGetValue(key, out var result))
+            {
+                return null;
+            }
+
+            if (nextParam.Length == 0)
+            {
+                return result;
+            }
+
+            return GetData_Internal(result, nextParam);
+        }
+        
+        public dynamic GetData(params string[] inParam)
+        {
+            if (inParam == null || inParam.Length == 0)
+            {
+                throw new ArgumentNullException();
+            }
+            return GetData_Internal(_map, inParam);
         }
 
-        public bool SetData(object inValue, params string[] inParam)
+        public bool SetData(dynamic inValue, params string[] inParam)
         {
-            object currentNode = _map;
+            dynamic currentNode = _map;
+            
             for (int i = 0; i < inParam.Length; i++)
             {
                 if (currentNode == null)
                 {
-                    currentNode = new Hashtable();
+                    currentNode = new Dictionary<string, dynamic>();
                 }
-                else if (currentNode is Hashtable)
+                else if (currentNode is Dictionary<string, dynamic>)
                 {
-                    var currentHashtable = currentNode as Hashtable;
+                    var currentHashtable = currentNode as Dictionary<string, dynamic>;
                     if (currentHashtable.ContainsKey(inParam[i]))
                     {
                         currentNode = currentHashtable[inParam[i]];
@@ -50,7 +73,7 @@ namespace DataMap
                         }
                         else
                         {
-                            currentHashtable.Add(inParam[i], new Hashtable());    
+                            currentHashtable.Add(inParam[i], new Dictionary<string, dynamic>());    
                         }
                         
                         currentNode = currentHashtable[inParam[i]];
@@ -59,13 +82,40 @@ namespace DataMap
             }
             return true;
         }
+
+
         
-        public static DataMap Create()
+        public static Dictionary<string, dynamic> MapOf(params dynamic[] inParams)
         {
-            DataMap result = new DataMap();
+            if (inParams == null || inParams.Length == 0)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (inParams.Length % 2 != 0)
+            {
+                throw new ArgumentException("Argument count not even.");
+            }
+
+            Dictionary<string, dynamic> result = new Dictionary<string, dynamic>();
+            for (int i = 0; i < inParams.Length; i += 2)
+            {
+                string key = (string)inParams[i];
+                dynamic value = inParams[i + 1];
+                result.Add(key, value);
+            }
             return result;
         }
-        
-        
+
+        public static List<dynamic> ListOf(params dynamic[] inParams)
+        {
+            return inParams.ToList();
+        }
+
+        public static DataMap Create(Dictionary<string, dynamic> inObj = null)
+        {
+            DataMap result = new DataMap(inObj);
+            return result;
+        }
     }
 }

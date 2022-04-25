@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\usmae\\RiderProjects\\DataMap\\DataMap\\DataMap.csproj": {}
+    "C:\\Workspace\\HyegeunCho\\DOP_in_csharp\\DataMap\\DataMap.csproj": {}
   },
   "projects": {
-    "C:\\Users\\usmae\\RiderProjects\\DataMap\\DataMap\\DataMap.csproj": {
+    "C:\\Workspace\\HyegeunCho\\DOP_in_csharp\\DataMap\\DataMap.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\usmae\\RiderProjects\\DataMap\\DataMap\\DataMap.csproj",
+        "projectUniqueName": "C:\\Workspace\\HyegeunCho\\DOP_in_csharp\\DataMap\\DataMap.csproj",
         "projectName": "DataMap",
-        "projectPath": "C:\\Users\\usmae\\RiderProjects\\DataMap\\DataMap\\DataMap.csproj",
+        "projectPath": "C:\\Workspace\\HyegeunCho\\DOP_in_csharp\\DataMap\\DataMap.csproj",
         "packagesPath": "C:\\Users\\usmae\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\usmae\\RiderProjects\\DataMap\\DataMap\\obj\\",
+        "outputPath": "C:\\Workspace\\HyegeunCho\\DOP_in_csharp\\DataMap\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\usmae\\AppData\\Roaming\\NuGet\\NuGet.Config"
