@@ -6,25 +6,18 @@ using System.Runtime.ExceptionServices;
 
 namespace DataMap
 {
-    public class DataMap
+    public static class _
     {
-        private Dictionary<string, dynamic> _map;
-
-        public DataMap(Dictionary<string, dynamic> inObj = null)
+        public static dynamic Get(dynamic inTarget, params string[] inParams)
         {
-            _map = inObj ?? new Dictionary<string, dynamic>();
-        }
-        
-        private dynamic GetData_Internal(dynamic inTarget, params string[] inParam)
-        {
-            var dict = inTarget as Dictionary<string, dynamic>;
+            var dict = inTarget as Map;
             if (dict == null)
             {
                 return inTarget;
             }
 
-            string key = inParam[0];
-            var nextParam = inParam.Skip(1).ToArray();
+            string key = inParams[0];
+            var nextParam = inParams.Skip(1).ToArray();
 
             if (!dict.TryGetValue(key, out var result))
             {
@@ -36,21 +29,55 @@ namespace DataMap
                 return result;
             }
 
-            return GetData_Internal(result, nextParam);
+            return Get(result, nextParam);
         }
-        
-        public dynamic GetData(params string[] inParam)
+    }
+    public class List : List<dynamic>
+    {
+        public static List of(params dynamic[] inParams)
         {
-            if (inParam == null || inParam.Length == 0)
+            List result = new List();
+            foreach (var item in inParams)
+            {
+                result.Add(item);
+            }
+
+            return result;
+        }
+    }
+    
+    public class Map : Dictionary<string, dynamic>
+    {
+        public static Map of(params dynamic[] inParams)
+        {
+            if (inParams == null || inParams.Length == 0)
             {
                 throw new ArgumentNullException();
             }
-            return GetData_Internal(_map, inParam);
+
+            if (inParams.Length % 2 != 0)
+            {
+                throw new ArgumentException("Argument count not even.");
+            }
+
+            Map result = new Map();
+            for (int i = 0; i < inParams.Length; i += 2)
+            {
+                string key = (string)inParams[i];
+                dynamic value = inParams[i + 1];
+                result.Add(key, value);
+            }
+            return result;
         }
+    }
+
+    public class DataMap
+    {
+        public dynamic Value { private set; get; } = null;
 
         public bool SetData(dynamic inValue, params string[] inParam)
         {
-            dynamic currentNode = _map;
+            dynamic currentNode = Value;
             
             for (int i = 0; i < inParam.Length; i++)
             {
@@ -81,41 +108,6 @@ namespace DataMap
                 }
             }
             return true;
-        }
-
-
-        
-        public static Dictionary<string, dynamic> MapOf(params dynamic[] inParams)
-        {
-            if (inParams == null || inParams.Length == 0)
-            {
-                throw new ArgumentNullException();
-            }
-
-            if (inParams.Length % 2 != 0)
-            {
-                throw new ArgumentException("Argument count not even.");
-            }
-
-            Dictionary<string, dynamic> result = new Dictionary<string, dynamic>();
-            for (int i = 0; i < inParams.Length; i += 2)
-            {
-                string key = (string)inParams[i];
-                dynamic value = inParams[i + 1];
-                result.Add(key, value);
-            }
-            return result;
-        }
-
-        public static List<dynamic> ListOf(params dynamic[] inParams)
-        {
-            return inParams.ToList();
-        }
-
-        public static DataMap Create(Dictionary<string, dynamic> inObj = null)
-        {
-            DataMap result = new DataMap(inObj);
-            return result;
         }
     }
 }

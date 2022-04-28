@@ -10,7 +10,7 @@ namespace DataMap.Example
             // List 3.6
             try
             {
-                string title = map.GetData("booksByIsbn", "978-1779501127", "title");
+                string title = _.Get(map,"booksByIsbn", "978-1779501127", "title");
                 Console.WriteLine(title);
             }
             catch (Exception e)

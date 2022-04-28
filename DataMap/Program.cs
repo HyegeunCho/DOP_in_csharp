@@ -8,7 +8,21 @@ namespace DataMap
     {
         static void Main(string[] args)
         {
-            RunTestCase(new TestCatalog());
+            ITestCase[] cases = new ITestCase[]
+            {
+                new TestWatchmen(),
+                new TestCatalog()
+            };
+
+            foreach (var item in cases)
+            {
+                Console.WriteLine($"===== [{item.GetType()}] =====");
+                RunTestCase(item);
+                Console.WriteLine("================================");
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("");
+            }
         }
 
         private static void RunTestCase(ITestCase inTest)

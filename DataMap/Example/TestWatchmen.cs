@@ -8,26 +8,30 @@ namespace DataMap.Example
     {
         public bool Execute()
         {
-            Console.WriteLine(DataModel.Watchmen.GetData("reviews", "reader1"));
-            Console.WriteLine(DataModel.Watchmen.GetData("reviews", "me"));
+            var map = Models.DataModel.Watchmen;
             
-            Console.WriteLine(DataModel.Watchmen.GetData("isbn"));
-            Console.WriteLine(DataModel.Watchmen.GetData("title"));
-            Console.WriteLine(DataModel.Watchmen.GetData("publicationYear"));
+            Console.WriteLine(_.Get(map, "reviews", "reader1"));
+            Console.WriteLine(_.Get(map, "reviews", "me"));
+            
+            Console.WriteLine(_.Get(map, "isbn"));
+            Console.WriteLine(_.Get(map, "title"));
+            Console.WriteLine(_.Get(map, "publicationYear"));
 
-            var authors = DataModel.Watchmen.GetData("authors");
+            var authors = _.Get(map, "authors");
             foreach (var author in authors)
             {
                 Console.WriteLine(author);
             }
 
-            var bookItems = DataModel.Watchmen.GetData("bookItems");
+            var bookItems = _.Get(map, "bookItems");
             foreach (var item in bookItems)
             {
-                DataMap data = DataMap.Create(item);
-                Console.WriteLine(data.GetData("id"));
-                Console.WriteLine(data.GetData("libId"));
-                Console.WriteLine(data.GetData("isLent"));
+                Map data = item as Map;
+                if (data == null) throw new Exception("하위 맵도 Map 타입으로 반환되어야 함");
+                
+                Console.WriteLine(_.Get(data, "id"));
+                Console.WriteLine(_.Get(data, "libId"));
+                Console.WriteLine(_.Get(data, "isLent"));
             }
 
             return true;
