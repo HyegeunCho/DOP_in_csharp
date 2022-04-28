@@ -8,7 +8,22 @@ namespace DataMap
     {
         static void Main(string[] args)
         {
-            var result = (new TestWatchmen()).Execute();
+            RunTestCase(new TestCatalog());
+        }
+
+        private static void RunTestCase(ITestCase inTest)
+        {
+            bool result = false;
+            try
+            {
+                result = inTest.Execute();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                result = false;
+            }
+            Console.WriteLine($"[{inTest.GetType()}] {result}");
         }
     }
 }
