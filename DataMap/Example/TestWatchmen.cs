@@ -4,9 +4,9 @@ namespace DataMap.Example
 {
     using Models;
     
-    public static class TestWatchmen
+    public class TestWatchmen : ITestCase
     {
-        public static bool Execute()
+        public bool Execute()
         {
             Console.WriteLine(DataModel.Watchmen.GetData("reviews", "reader1"));
             Console.WriteLine(DataModel.Watchmen.GetData("reviews", "me"));

@@ -8,7 +8,7 @@ namespace DataMap
     {
         static void Main(string[] args)
         {
-            var result = Example.TestWatchmen.Execute();
+            var result = (new TestWatchmen()).Execute();
         }
     }
 }
