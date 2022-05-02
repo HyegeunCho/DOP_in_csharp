@@ -31,6 +31,17 @@ namespace DataMap
 
             return Get(result, nextParam);
         }
+
+        // IMPL Listing 3.12
+        public static dynamic Map(List<string> inKeys, Func<string, dynamic> inFunction)
+        {
+            List result = new List();
+            foreach (string key in inKeys)
+            {
+                result.Add(inFunction(key));
+            }
+            return result;
+        }
     }
     public class List : List<dynamic>
     {

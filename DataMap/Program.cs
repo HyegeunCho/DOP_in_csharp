@@ -11,7 +11,8 @@ namespace DataMap
             ITestCase[] cases = new ITestCase[]
             {
                 new TestWatchmen(),
-                new TestCatalog()
+                new TestCatalog(), 
+                new TestMapFunction()
             };
 
             foreach (var item in cases)
