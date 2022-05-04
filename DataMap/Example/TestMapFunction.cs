@@ -18,6 +18,8 @@ namespace DataMap.Example
             {
                 Console.WriteLine($"{item}");
             }
+
+            Map info = bookInfo(DataModel.Catalog, book);
             
             return true;
         }
@@ -32,5 +34,15 @@ namespace DataMap.Example
             });
             return names;
         }
+
+        private Map bookInfo(Map inData, Map inBook)
+        {
+            Map bookInfo = Map.of(
+                "title", _.Get(inBook, "title"), 
+                "isbn", _.Get(inBook, "isbn"),
+                "authorNames", authorNames(inData, inBook)
+            );
+            return bookInfo;
+        }
     }
-}
+} 
